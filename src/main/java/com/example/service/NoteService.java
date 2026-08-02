@@ -2,6 +2,7 @@ package com.example.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,6 +25,7 @@ public class NoteService {
 		newNote.setImageUrl(imageUrl);
 		newNote.setDeleted(false);
 		newNote.setCreatedOn(LocalDateTime.now());
+		newNote.setUpdatedOn(LocalDateTime.now());
 		return noteRepository.save(newNote);
 	}
 	
@@ -37,6 +39,7 @@ public class NoteService {
 			existingNote.setNoteContent(note.getNoteContent());
 		if(note.getImageUrl() != null)
 			existingNote.setImageUrl(note.getImageUrl());
+		existingNote.setUpdatedOn(LocalDateTime.now());
 		return noteRepository.save(existingNote);
 	}
 	
@@ -52,7 +55,11 @@ public class NoteService {
 	
 	public List<Note> getAllNotesAndDeletedFalse(){
 		List<Note> allNotes = noteRepository.findAll();
-		List<Note> notDeletedNotes = allNotes.stream().filter(note -> !note.isDeleted()).collect(Collectors.toList());
+//		List<Note> notDeletedNotes = allNotes.stream().filter(note -> !note.isDeleted()).collect(Collectors.toList());
+		List<Note> notDeletedNotes = allNotes.stream()
+							        .filter(note -> !note.isDeleted())
+							        .sorted(Comparator.comparing(Note::getUpdatedOn).reversed())
+							        .collect(Collectors.toList());
 		return notDeletedNotes;
 	}
 	

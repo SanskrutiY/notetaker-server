@@ -21,6 +21,7 @@ public class Note {
 	String noteContent;
 	String imageUrl;
 	LocalDateTime createdOn;
+	LocalDateTime updatedOn;
 	boolean isDeleted;
 
 	public Long getNoteId() {
@@ -58,6 +59,12 @@ public class Note {
 	}
 	public void setCreatedOn(LocalDateTime createdOn) {
 		this.createdOn = createdOn;
+	}
+	public LocalDateTime getUpdatedOn() {
+		return updatedOn;
+	}
+	public void setUpdatedOn(LocalDateTime updatedOn) {
+		this.updatedOn = updatedOn;
 	}
 	public boolean isDeleted() {
 		return isDeleted;
