@@ -57,7 +57,7 @@ public class NoteService {
 		List<Note> allNotes = noteRepository.findAll();
 //		List<Note> notDeletedNotes = allNotes.stream().filter(note -> !note.isDeleted()).collect(Collectors.toList());
 		List<Note> notDeletedNotes = allNotes.stream()
-							        .filter(note -> !note.isDeleted())
+							        .filter(note -> !note.getIsDeleted())
 							        .sorted(Comparator.comparing(Note::getUpdatedOn).reversed())
 							        .collect(Collectors.toList());
 		return notDeletedNotes;
@@ -65,8 +65,15 @@ public class NoteService {
 	
 	public List<Note> getNotesAndDeletedTrue(){
 		List<Note> allNotes = noteRepository.findAll();
-		List<Note> deletedNotes = allNotes.stream().filter(note -> note.isDeleted()).collect(Collectors.toList());
+		List<Note> deletedNotes = allNotes.stream().filter(note -> note.getIsDeleted()).collect(Collectors.toList());
 		return deletedNotes;
+	}
+
+	public Note restoreNoteById(Long id) {
+		Note note = noteRepository.findById(id).orElseThrow(() -> new RuntimeException("Id " + id + " not found"));
+		note.setDeleted(false);
+		noteRepository.save(note);
+		return note;
 	}
 	
 	public Note getNotebyId(Long id) {
@@ -76,12 +83,14 @@ public class NoteService {
 	public List<Note> getByParticularDate(LocalDate date) {
 	    LocalDateTime start = date.atStartOfDay();
 	    LocalDateTime end = date.plusDays(1).atStartOfDay();
-	    return noteRepository.findByCreatedOnBetween(start, end);
+	    List<Note> filteredNotes = noteRepository.findByCreatedOnBetween(start, end);
+	    return filteredNotes.stream().filter(n -> !n.getIsDeleted()).collect(Collectors.toList());
 	}
 	
 	public List<Note> getFromParticularDate(LocalDate date) {
 	    LocalDateTime start = date.atStartOfDay();
-	    return noteRepository.findByCreatedOnAfter(start);
+	    List<Note> filteredNotes = noteRepository.findByCreatedOnAfter(start);
+	    return filteredNotes.stream().filter(n -> !n.getIsDeleted()).collect(Collectors.toList());
 	}
 	
 }

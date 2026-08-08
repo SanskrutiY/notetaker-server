@@ -64,6 +64,10 @@ public class NoteController {
         return ResponseEntity.ok(noteService.getNotesAndDeletedTrue());
     }
     
+    @PostMapping("/{id}/restore")
+    public ResponseEntity<Note> retoreDeletedNoteById(@PathVariable Long id) {
+        return ResponseEntity.ok(noteService.restoreNoteById(id));
+    }
     
     @GetMapping("/{id}")
     public ResponseEntity<Note> getNoteById(@PathVariable Long id) {
