@@ -66,7 +66,7 @@ public class Note {
 	public void setUpdatedOn(LocalDateTime updatedOn) {
 		this.updatedOn = updatedOn;
 	}
-	public boolean isDeleted() {
+	public boolean getIsDeleted() {
 		return isDeleted;
 	}
 	public void setDeleted(boolean isDeleted) {
