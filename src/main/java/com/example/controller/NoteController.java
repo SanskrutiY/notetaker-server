@@ -49,6 +49,12 @@ public class NoteController {
         return ResponseEntity.ok("Note deleted successfully!");
     }
     
+    @DeleteMapping("/{id}/permanent")
+    public ResponseEntity<String> deleteNotePermanently(@PathVariable Long id) {
+        noteService.deleteNotePermanently(id);
+        return ResponseEntity.ok("Note deleted successfully!");
+    }
+    
     @GetMapping("/all")
     public ResponseEntity<List<Note>> getAllNotes() {
         return ResponseEntity.ok(noteService.getAllNotes());

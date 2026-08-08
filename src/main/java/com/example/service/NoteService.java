@@ -49,6 +49,11 @@ public class NoteService {
 		noteRepository.save(existingNote);
 	}
 	
+	public void deleteNotePermanently(Long id) {
+		Note existingNote = noteRepository.findById(id).orElseThrow(()-> new RuntimeException("Id "+id+" not found"));
+		noteRepository.delete(existingNote);
+	}
+	
 	public List<Note> getAllNotes(){
 		return noteRepository.findAll();
 	}
